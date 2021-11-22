@@ -1,0 +1,75 @@
+﻿@model IEnumerable<AplikacjaMVC.Models.Images>
+
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Text.RegularExpressions
+@{
+    ViewData["Title"] = "MainPage";
+}
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+@*@using (Html.BeginForm("Buttons", "Image", FormMethod.Post))*@
+@*  *@
+
+<h1>Best Memes</h1>
+<div class="form-group"> </div>
+<p><strong>@TempData["ErrorDoubleDownVote"]</strong></p>
+<p><strong>@TempData["ErrorDoubleUpVote"]</strong></p>
+@foreach (var image in Model)
+{
+
+
+    <div id="result">
+
+        <div class="card mb-3" style="width: 40rem;">
+            <div class="card-body">
+                <h3 class="card-title">@image.Title</h3>
+                <h5 class="card-text">@image.Description</h5>
+                <p class="card-text"><small class="text-muted">Autor: XXX</small></p>
+            </div>
+            @{string pagesTitle = image.Title;
+                string toLower = pagesTitle.ToLower();
+                string newString = "";  // MUST set the Regex result to a variable for it to take effect
+                newString = Regex.Replace(toLower, @"\s+|[().]", "-"); //Replaces all(+) space characters (\s) with empty("")
+                string pageTitle = Regex.Replace(newString, @"[().@!#$%^&*/,;':{}]", ""); //Replaces all(+) space characters (\s) with empty("")
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js" integrity="sha256-v2nySZafnswY87um3ymbg7p9f766IQspC5oqaqZVX2c=" crossorigin="anonymous"></script>
+
+                ;}
+
+            <form asp-action="Buttons" asp-controller="Image" method="POST" data-ajax-update="#result" data-ajax="true">
+                <div class="form-group"> </div>
+                <a href="@Url.Action("ImagePage", "Image", new { id = @image.Id, title = pageTitle })" target="_blank">
+                    <img src="@Url.Content(image.Path)" onclick="ImagePage(); return false;" class="card-img-top" alt="Image">
+                </a>
+                <div class="input-group-button">
+                    <button  name="plus" class="btn btn-dark" value="@image.Id">+</button>
+                    @image.Rating
+                    @*<input hidden asp-for="Rating" />*@
+                    <button   name="minus" class="btn btn-dark" value="@image.Id">-</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @*@section scripts{
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js" integrity="sha256-v2nySZafnswY87um3ymbg7p9f766IQspC5oqaqZVX2c=" crossorigin="anonymous"></script>
+
+        }*@
+    @*<div>
+            <h3><strong>@image.Title</strong></h3>
+            <h5>@image.Description</h5>
+            <img src="@Url.Content(image.Path)" alt="Image2" width="400" /><br />
+            <div class="input-group-button">
+                <button name="plus" onclick="Increment" value="@image.Id">+</button>
+                @image.Rating
+                <button name="minus" onclick="Decrement" value="@image.Id">-</button>
+
+            </div>
+        </div>*@
+
+
+    @*}*@
+
+
+
+
+}

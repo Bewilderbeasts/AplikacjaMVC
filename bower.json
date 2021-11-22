@@ -1,0 +1,7 @@
+﻿{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jquery-ajax-unobtrusive": "3.2.6"
+  }
+}

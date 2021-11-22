@@ -1,0 +1,11 @@
+﻿@model Register
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "LoginSuccess";
+}
+
+<h1>Success at logging in</h1>
+
+<h2>Welcome back @Context.Session.GetString("_Name")</h2>
+
+

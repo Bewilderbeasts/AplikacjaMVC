@@ -1,0 +1,42 @@
+﻿@model AplikacjaMVC.Models.Images
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<h1>Upload</h1>
+
+<h4>Images</h4>
+<hr />
+
+<p><strong>@TempData["ErrorUpload"]</strong></p>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Upload" asp-controller="Image" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="ImageFile" type="file" runat="server" />
+
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Upload" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

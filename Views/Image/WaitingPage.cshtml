@@ -1,0 +1,29 @@
+﻿@model IEnumerable<AplikacjaMVC.Models.Images>
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Waiting Page";
+}
+@using (Html.BeginForm("Buttons", "Image", FormMethod.Post))
+{
+
+    <h1>Almost Best Memes</h1>
+    <div class="form-group"> </div>
+    <p><strong>@TempData["ErrorDoubleDownVote"]</strong></p>
+    <p><strong>@TempData["ErrorDoubleUpVote"]</strong></p>
+    @foreach (var image in Model)
+    {<div>
+            <img src="@Url.Content(image.Path)" alt="Image2" width="400" /><br />
+            <div class="input-group-button">
+                <button name="plus" onclick="Increment" value="@image.Id">+</button>
+                @image.Rating
+                <button name="minus" onclick="Decrement" value="@image.Id">-</button>
+
+            </div>
+        </div>
+
+
+    }
+
+
+}

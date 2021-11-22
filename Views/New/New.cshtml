@@ -1,0 +1,60 @@
+﻿@model Register
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+
+}
+
+<div style="width:250px">
+    <form method="post" asp-action="RegisterAction" asp-controller="Register">
+        <div>
+            <label>Email:</label>
+            <input type="text" asp-for="Email" class="form-control" />
+        </div>
+        <div>
+            <label>Username:</label>
+            <input type="text" asp-for="Username" class="form-control" />
+        </div>
+        <div>
+            <label>Password:</label>
+            <input type="text" asp-for="Password" class="form-control" />
+        </div><br />
+        <button type="submit" class="btn btn-primary">Dodaj</button>
+    </form>
+</div>
+    
+    <form method="post" asp-action="RegisterAction" asp-controller="Register">
+        <div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Customer Details Form</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" asp-for="Email" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" asp-for="Username" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" asp-for="Password" class="form-control" />
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+  
+

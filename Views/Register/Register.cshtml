@@ -1,0 +1,34 @@
+﻿@model Register
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+
+}
+
+<div style="width:250px">
+    <form method="post" asp-action="RegisterAction" asp-controller="Register">
+        <div>
+            <label>Email:</label>
+            <input type="text" asp-for="Email" class="form-control" />
+        </div>
+        <div class="text-danger">
+            @ViewBag.ErrorMessageEmail
+        </div>
+
+        <div>
+            <label>Username:</label>
+            <input type="text" asp-for="Username" class="form-control" />
+        </div>
+        <div class="text-danger">
+            @ViewBag.ErrorMessageUsername
+        </div>
+        <div>
+            <label>Password:</label>
+            <input type="text" minlength="6" maxlength="15" required autocomplete="off" asp-for="Password" class="form-control" />
+        </div><br />
+
+        <button type="submit" class="btn btn-primary">Create account</button>
+        <div class="text-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    </form>
+</div>

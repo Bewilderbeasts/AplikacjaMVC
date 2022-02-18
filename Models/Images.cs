@@ -15,6 +15,10 @@ namespace AplikacjaMVC.Models
         public int Id { get; set; }
 
         [Column(TypeName = "nvarchar(50)")]
+        [DisplayName("Username")]
+        public string Username { get; set; }
+
+        [Column(TypeName = "nvarchar(50)")]
         public string Title { get; set; }
 
         [Column(TypeName = "nvarchar(100)")]

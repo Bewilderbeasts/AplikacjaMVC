@@ -20,5 +20,6 @@ namespace AplikacjaMVC.Models
         public string Salt { get; set; }
 
         public List<ImagesVotes> ImagesVotes { get; set; }
+
     }
 }

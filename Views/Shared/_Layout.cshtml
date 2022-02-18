@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -39,19 +40,19 @@
 
                     @if (Context.Session.GetString("_Name") != null)
                     {
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item" style="line-height: 40px;">
-                        @Context.Session.GetString("_Name")
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Profile">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Logout">Logout</a>
-                    </li>
-                </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item" style="line-height: 40px;">
+                                @Context.Session.GetString("_Name")
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Profile">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Logout">Logout</a>
+                            </li>
+                        </ul>
 
-                 
+
 
 
                     }
@@ -70,7 +71,7 @@
                         </ul>
                     }
 
-               
+
                 </div>
             </div>
         </nav>

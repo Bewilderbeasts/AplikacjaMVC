@@ -49,7 +49,11 @@ namespace AplikacjaMVC.Controllers
                         image.ImageFile.CopyToAsync(fileStream);
                     }
 
-
+                   
+                    int UserID = Context.Register
+                       .Where(m => m.Username == session)
+                        .Select(m => m.Id)
+                       .SingleOrDefault();
 
                     Images newImage = new Images();
                     newImage.Description = Description;
@@ -58,6 +62,7 @@ namespace AplikacjaMVC.Controllers
                     newImage.Filetype = fileExtension;
                     newImage.CreatedOn = DateTime.Now;
                     newImage.Path = filePath;
+                    newImage.Username = session;
 
                     this.Context.Images.Add(newImage);
                     this.Context.SaveChanges();
@@ -112,7 +117,8 @@ namespace AplikacjaMVC.Controllers
                    .SingleOrDefault();
             
 
-            return View(image);
+            //return View(image);
+            return PartialView(image);
         }
 
         public ActionResult ParitialImage(int id, string title)
@@ -155,7 +161,8 @@ namespace AplikacjaMVC.Controllers
                    .Where(m => m.Username == Username)
                     .Select(m => m.Id)
                    .SingleOrDefault();
-                
+
+             
 
 
                 if (plus == null)
@@ -172,6 +179,8 @@ namespace AplikacjaMVC.Controllers
                                               where i.Rating >= 1
                                               select i).ToList();
 
+                        
+
                         return PartialView("MainPage",image);
                     }
                     else if (madeVote == "plus")
@@ -179,7 +188,7 @@ namespace AplikacjaMVC.Controllers
                         var doneVote = new ImagesVotes { RegisterID = UserID, ImagesID = Int32.Parse(minus) };
                         var dataPerson = this.Context.ImagesVotes.FirstOrDefault(m => m.RegisterID == UserID && (m.ImagesID == Int32.Parse(minus)));
 
-                        dataPerson.Vote = "NULL";
+                        dataPerson.Vote = "brak";
                         ImageId = minus;
                         int id = Int32.Parse(ImageId);
                         int Rating = Context.Images
@@ -317,8 +326,9 @@ namespace AplikacjaMVC.Controllers
         }
 
 
+
         [HttpPost]
-        public ActionResult ButtonsPage(string plus, string minus)
+        public ActionResult ButtonsOnPage(string plus, string minus, int newid)
         {
 
 
@@ -331,6 +341,13 @@ namespace AplikacjaMVC.Controllers
                     .Select(m => m.Id)
                    .SingleOrDefault();
 
+
+                int CorrectImageId = newid;
+                Images correctImage = new Images();
+                correctImage = Context.Images
+                       .Where(m => m.Id == CorrectImageId)
+                        .Select(m => m)
+                       .SingleOrDefault();
 
 
                 if (plus == null)
@@ -347,14 +364,20 @@ namespace AplikacjaMVC.Controllers
                                               where i.Rating >= 1
                                               select i).ToList();
 
-                        return PartialView("ImagePage", image);
+                        var image2 = from i in this.Context.Images
+                                     where i.Id == Int32.Parse(minus)
+                                     select i;
+                        //Images image3 = (Images)image2;
+
+
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
                     }
                     else if (madeVote == "plus")
                     {
                         var doneVote = new ImagesVotes { RegisterID = UserID, ImagesID = Int32.Parse(minus) };
                         var dataPerson = this.Context.ImagesVotes.FirstOrDefault(m => m.RegisterID == UserID && (m.ImagesID == Int32.Parse(minus)));
 
-                        dataPerson.Vote = "NULL";
+                        dataPerson.Vote = null;
                         ImageId = minus;
                         int id = Int32.Parse(ImageId);
                         int Rating = Context.Images
@@ -366,11 +389,17 @@ namespace AplikacjaMVC.Controllers
                         List<Images> image = (from i in this.Context.Images
                                               where i.Rating >= 1
                                               select i).ToList();
+
+                       
+                        //Images image3 = (Images)image2;
                         Context.Entry(dataPerson).State = EntityState.Modified;
                         Context.SaveChanges();
-                        return PartialView("ImagePage", image);
+                        var image2 = from i in this.Context.Images
+                                     where i.Id == Int32.Parse(minus)
+                                     select i;
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
                     }
-                    else if (madeVote == "NULL")
+                    else if (madeVote == null)
                     {
                         var doneVote = new ImagesVotes { RegisterID = UserID, ImagesID = Int32.Parse(minus) };
                         var dataPerson = this.Context.ImagesVotes.FirstOrDefault(m => m.RegisterID == UserID && (m.ImagesID == Int32.Parse(minus)));
@@ -387,16 +416,56 @@ namespace AplikacjaMVC.Controllers
                         List<Images> image = (from i in this.Context.Images
                                               where i.Rating >= 1
                                               select i).ToList();
+
+                        
+                        //Images image3 = (Images)image2;
                         Context.Entry(dataPerson).State = EntityState.Modified;
                         Context.SaveChanges();
-                        return PartialView("ImagePage", image);
+                        var image2 = from i in this.Context.Images
+                                     where i.Id == Int32.Parse(minus)
+                                     select i;
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
+                    }
+                    else
+                    {
+                        //glos na minus czysty
+                        ImageId = minus;
+                        string vote = "minus";
+                        int id = Int32.Parse(ImageId);
+                        int Rating = Context.Images
+                           .Where(m => m.Id == id)
+                            .Select(m => m.Rating)
+                           .SingleOrDefault();
+                        var Ratings = Context.Images.Find(id);
+                        Ratings.Rating = Ratings.Rating - 1;
+
+                        ImagesVotes imagesVotes = new ImagesVotes();
+                        imagesVotes.ImagesID = id;
+                        imagesVotes.RegisterID = UserID;
+                        imagesVotes.Vote = vote;
+
+                        this.Context.ImagesVotes.Add(imagesVotes);
+                        Images image = new Images();
+                        image = Context.Images
+                           .Where(m => m.Id == id)
+                            .Select(m => m)
+                           .SingleOrDefault();
+                        this.Context.SaveChanges();
+                        List<Images> imaged = (from i in this.Context.Images
+                                               where i.Rating >= 1
+                                               select i).ToList();
+                        var image2 = from i in this.Context.Images
+                                     where i.Id == Int32.Parse(minus)
+                                     select i;
+                        //Images image3 = (Images)image2;
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
                     }
 
 
                 }
                 else
                 {
-                    //sprawdzenie czy glos byl na plus
+
                     var madeVote = Context.ImagesVotes
                        .Where(m => m.RegisterID == UserID && (m.ImagesID == Int32.Parse(plus)))
                         .Select(m => m.Vote)
@@ -405,16 +474,19 @@ namespace AplikacjaMVC.Controllers
 
                     if (madeVote == "plus")
                     {
-                        //error double plus
+
                         List<Images> image = (from i in this.Context.Images
                                               where i.Rating >= 1
                                               select i).ToList();
 
-                        return PartialView("ImagePage", image);
+                        var image2 = from i in this.Context.Images
+                                     where i.Id == Int32.Parse(plus)
+                                     select i;
+                       // Images image3 = (Images)image2;
+
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
 
 
-                        //TempData["ErrorDoubleDownVote"] = "You cannot upvote twice";
-                        //return RedirectToAction("MainPage");
 
                     }
                     else if (madeVote == "minus")
@@ -425,7 +497,7 @@ namespace AplikacjaMVC.Controllers
                         var doneVote = new ImagesVotes { RegisterID = UserID, ImagesID = Int32.Parse(plus) };
                         var daneOsoby = this.Context.ImagesVotes.FirstOrDefault(m => m.RegisterID == UserID && (m.ImagesID == Int32.Parse(plus)));
 
-                        daneOsoby.Vote = "NULL";
+                        daneOsoby.Vote = null;
                         ImageId = plus;
                         int id = Int32.Parse(ImageId);
                         int Rating = Context.Images
@@ -438,11 +510,18 @@ namespace AplikacjaMVC.Controllers
                         List<Images> image = (from i in this.Context.Images
                                               where i.Rating >= 1
                                               select i).ToList();
+
+                       
+                        //Images image3 = (Images)image2;
                         Context.Entry(daneOsoby).State = EntityState.Modified;
                         Context.SaveChanges();
-                        return PartialView("ImagePage", image);
+                        var image2 = from i in this.Context.Images
+                                     where i.Id == Int32.Parse(plus)
+                                     select i;
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
 
                     }
+                   
                     else
                     {
                         //glos na plus
@@ -471,7 +550,11 @@ namespace AplikacjaMVC.Controllers
                         List<Images> imaged = (from i in this.Context.Images
                                                where i.Rating >= 1
                                                select i).ToList();
-                        return PartialView("ImagePage", imaged);
+                        var image2 = from i in this.Context.Images
+                                        where i.Id == Int32.Parse(plus)
+                                        select i;
+                        //Images image3 = (Images)image2;
+                        return PartialView("ParitialImage", image2.FirstOrDefault());
                     }
 
 
@@ -491,9 +574,8 @@ namespace AplikacjaMVC.Controllers
 
 
 
-            return RedirectToAction("MainPage");
+            //return RedirectToAction("ParitialImage");
         }
-
 
     }
 }

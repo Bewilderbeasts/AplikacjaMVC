@@ -23,7 +23,10 @@
             <div class="card-body">
                 <h3 class="card-title">@image.Title</h3>
                 <h5 class="card-text">@image.Description</h5>
-                <p class="card-text"><small class="text-muted">Autor: XXX</small></p>
+               
+
+
+                <p class="card-text"><small class="text-muted">Autor: @image.Username</small></p>
             </div>
             @{string pagesTitle = image.Title;
                 string toLower = pagesTitle.ToLower();
@@ -40,36 +43,43 @@
                     <img src="@Url.Content(image.Path)" onclick="ImagePage(); return false;" class="card-img-top" alt="Image">
                 </a>
                 <div class="input-group-button">
-                    <button  name="plus" class="btn btn-dark" value="@image.Id">+</button>
+                    <button name="plus" class="btn btn-dark" value="@image.Id">+</button>
                     @image.Rating
                     @*<input hidden asp-for="Rating" />*@
-                    <button   name="minus" class="btn btn-dark" value="@image.Id">-</button>
+                    <button name="minus" class="btn btn-dark" value="@image.Id">-</button>
 
                 </div>
             </form>
         </div>
     </div>
 
-    @*@section scripts{
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js" integrity="sha256-v2nySZafnswY87um3ymbg7p9f766IQspC5oqaqZVX2c=" crossorigin="anonymous"></script>
-
-        }*@
-    @*<div>
-            <h3><strong>@image.Title</strong></h3>
-            <h5>@image.Description</h5>
-            <img src="@Url.Content(image.Path)" alt="Image2" width="400" /><br />
-            <div class="input-group-button">
-                <button name="plus" onclick="Increment" value="@image.Id">+</button>
-                @image.Rating
-                <button name="minus" onclick="Decrement" value="@image.Id">-</button>
-
-            </div>
-        </div>*@
-
-
-    @*}*@
-
-
-
 
 }
+@*@section scripts{
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.js" integrity="sha256-v2nySZafnswY87um3ymbg7p9f766IQspC5oqaqZVX2c=" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            $("#plusButton").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/ImageController/Buttons",
+                    data: {
+                        id: $(this).val(), // < note use of 'this' here
+                        minus: minus,
+                        plus: plus
+                    },
+                    success: function (result) {
+                        alert('ok');
+                    },
+                    error: function (result) {
+                        alert('error');
+                    }
+                });
+            });
+        </script>
+    }*@

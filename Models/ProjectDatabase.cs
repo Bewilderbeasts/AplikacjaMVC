@@ -14,7 +14,7 @@ namespace AplikacjaMVC.Models
 
         }
         public DbSet<Register> Register { get; set; }
-        public DbSet<AplikacjaMVC.Models.Images> Images { get; set; }
+        public DbSet<Images> Images { get; set; }
 
         public DbSet<ImagesVotes> ImagesVotes { get; set; }
 

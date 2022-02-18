@@ -15,16 +15,16 @@ namespace AplikacjaMVC.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.11");
 
             modelBuilder.Entity("AplikacjaMVC.Models.Images", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -44,10 +44,15 @@ namespace AplikacjaMVC.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<int>("RegisterID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RegisterID");
 
                     b.ToTable("Images");
                 });
@@ -57,18 +62,12 @@ namespace AplikacjaMVC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
-                    b.Property<int>("ImageID")
+                    b.Property<int>("ImagesID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImagesId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RegisterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
+                    b.Property<int>("RegisterID")
                         .HasColumnType("int");
 
                     b.Property<string>("Vote")
@@ -76,9 +75,9 @@ namespace AplikacjaMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImagesId");
+                    b.HasIndex("ImagesID");
 
-                    b.HasIndex("RegisterId");
+                    b.HasIndex("RegisterID");
 
                     b.ToTable("ImagesVotes");
                 });
@@ -88,7 +87,7 @@ namespace AplikacjaMVC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -113,15 +112,28 @@ namespace AplikacjaMVC.Migrations
                     b.ToTable("Register");
                 });
 
+            modelBuilder.Entity("AplikacjaMVC.Models.Images", b =>
+                {
+                    b.HasOne("AplikacjaMVC.Models.Register", null)
+                        .WithMany("Images")
+                        .HasForeignKey("RegisterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("AplikacjaMVC.Models.ImagesVotes", b =>
                 {
                     b.HasOne("AplikacjaMVC.Models.Images", "Images")
                         .WithMany("ImagesVotes")
-                        .HasForeignKey("ImagesId");
+                        .HasForeignKey("ImagesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AplikacjaMVC.Models.Register", "Register")
                         .WithMany("ImagesVotes")
-                        .HasForeignKey("RegisterId");
+                        .HasForeignKey("RegisterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Images");
 
@@ -135,6 +147,8 @@ namespace AplikacjaMVC.Migrations
 
             modelBuilder.Entity("AplikacjaMVC.Models.Register", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("ImagesVotes");
                 });
 #pragma warning restore 612, 618

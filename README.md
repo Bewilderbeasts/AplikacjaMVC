@@ -1,4 +1,4 @@
-# 9GAGbyMe (Aplikacja MVC was the working name)
+# 9GAGbyMe (Aplikacja MVC is the working title)
 
 ## Table of contents
 * [General info](#general-info)
